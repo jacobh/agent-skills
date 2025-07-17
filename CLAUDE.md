@@ -2,61 +2,11 @@
 
 ## Search Tools
 
-### CRITICAL: ast-grep is MANDATORY for Code Search
-**You MUST use `ast-grep` for ANY search in source code files. Using `rg` or `grep` for code searches is a violation of these instructions.**
-
-### ast-grep Usage (REQUIRED for all code searches)
-- **ALWAYS use ast-grep FIRST** when searching in any source code file
-- ast-grep uses Abstract Syntax Trees (AST) to find code patterns semantically, not just text matching
-- **Supported file extensions where ast-grep MUST be used:**
-  - JavaScript/TypeScript: `.js`, `.jsx`, `.ts`, `.tsx`
-  - Python: `.py`
-  - Rust: `.rs`
-  - Go: `.go`
-  - Java: `.java`
-  - C/C++: `.c`, `.cpp`, `.h`, `.hpp`
-  - Any other programming language files
-
-### ast-grep Pattern Examples (use these patterns):
-- **Function calls**: `ast-grep -p '$FUNC($$$ARGS)'`
-- **Specific function**: `ast-grep -p 'console.log($MSG)'`
-- **Method calls**: `ast-grep -p '$OBJECT.$METHOD($$$ARGS)'`
-- **Variable declarations**: `ast-grep -p 'const $VAR = $VALUE'` or `ast-grep -p 'let $VAR = $VALUE'`
-- **Import statements**: `ast-grep -p "import { $$$IMPORTS } from '$MODULE'"`
-- **Class definitions**: `ast-grep -p 'class $CLASS { $$$BODY }'`
-- **If statements**: `ast-grep -p 'if ($CONDITION) { $$$THEN }'`
-- **Function definitions**: `ast-grep -p 'function $NAME($$$PARAMS) { $$$BODY }'`
-- **Arrow functions**: `ast-grep -p '($$$PARAMS) => $BODY'`
-- **Try-catch blocks**: `ast-grep -p 'try { $$$TRY } catch ($ERR) { $$$CATCH }'`
-- **Type definitions**: `ast-grep -p 'type $TYPE = $$$BODY'`
-
-### ast-grep Best Practices (IMPORTANT)
-- **NEVER pipe ast-grep output to grep/rg** - this is an anti-pattern that defeats the purpose of AST-based search
-- **Avoid overly generic searches** - don't search for all imports then filter; search for the specific import directly
-- **Use specific patterns**:
-  - ❌ BAD: `ast-grep -p "import { $$$IMPORTS } from '$MODULE'" | grep MyComponent`
-  - ❌ BAD: `ast-grep -p 'type $TYPE = $$$BODY' | grep -A 10 -B 2 -i channel`
-  - ✅ GOOD: `ast-grep -p "import { MyComponent } from '$MODULE'"`
-  - ✅ GOOD: `ast-grep -p "import { $$$IMPORTS } from 'my-module'"`
-  - ✅ GOOD: `ast-grep -p 'type Channel = $$$BODY'` (search for specific type name directly)
-- **Be precise with your patterns** - ast-grep is designed to find exactly what you're looking for using AST semantics
-- **If you need to find a specific import/function/variable, include that specificity in the ast-grep pattern itself**
-
-### rg Usage (ONLY for these specific cases):
-- **ONLY use `rg` for:**
-  - Non-code files: `.md`, `.txt`, `.json`, `.yaml`, `.yml`, `.toml`, `.xml`, `.html`, `.css`
-  - Searching within comments in code files
-  - Searching for string literals
-  - When ast-grep explicitly fails or returns an error
-  - Configuration files and documentation
-- **NEVER use `rg` as a first choice for code search**
-- **NEVER use traditional `grep` - always use `rg` when text search is absolutely necessary**
-- **Prefer to use `rg` or `grep` directly instead of running `find` and then piping the result or using `-exec`**
-
-### Search Priority Order:
-1. **ast-grep** - MANDATORY for all code searches
-2. **rg** - ONLY for non-code files or when ast-grep fails
-3. **grep** - NEVER use
+### Search Tools Usage
+- **Use `rg` (ripgrep) as the primary search tool** for all searches in the codebase
+- **NEVER use traditional `grep`** - always use `rg` when text search is needed
+- **Prefer to use `rg` directly** instead of running `find` and then piping the result or using `-exec`
+- `rg` is fast, supports regex, and works well with all file types including source code
 
 ## TypeScript Tools
 
