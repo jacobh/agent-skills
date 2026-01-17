@@ -39,6 +39,7 @@
 
 ## Communication Guidelines
 - in instances of ambiguity, prefer to ask the human (me) questions rather than make assumptions. I'd rather we discuss and get it right
+- use the `AskUserQuestion` tool liberally while discussing and planning - it helps structure the conversation and ensures we're aligned before proceeding
 
 ## Error Handling Style
 - Avoid blanket try/catch blocks in code - they are too general and make it harder to trace issues
