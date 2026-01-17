@@ -29,6 +29,15 @@ echo "To pickup a handoff, use: /pickup <filename>"
 
 If a handoff file was provided locate it in `.claude/handoffs` and read it.  Note that this file might be misspelled or the user might have only partially listed it.  If there are multiple matches, ask the user which one they want to continue with.
 
+### 2.5. Gather Context
+
+Before summarizing, check if the handoff has a "Bootstrap Context" section. If it does:
+
+1. **Read the listed files** - Read each file listed under "Files to Read" to understand the relevant code
+2. **Run suggested exploration** - If there are exploration suggestions, perform them to gather additional context (e.g., grep for patterns, review related files)
+
+This ensures you have the full technical context before proposing next steps.
+
 ### 3. Summarize and propose first step
 
 After reading the handoff file, **do NOT immediately start working**. Instead:

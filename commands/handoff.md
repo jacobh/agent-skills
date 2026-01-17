@@ -33,6 +33,9 @@ Your plan should include the following sections:
 5. **Pending Tasks**: Outline any pending tasks that you have explicitly been asked to work on.
 6. **Current Work**: Describe in detail precisely what was being worked on immediately before this handoff request, paying special attention to the most recent messages from both user and assistant. Include file names and code snippets where applicable.
 7. **Optional Next Step**: List the next step that you will take that is related to the most recent work you were doing. IMPORTANT: ensure that this step is DIRECTLY in line with the user's explicit requests, and the task you were working on immediately before this handoff request. If your last task was concluded, then only list next steps if they are explicitly in line with the users request. Do not start on tangential requests without confirming with the user first.
+8. **Bootstrap Context**: Provide context to help the next agent get up to speed quickly:
+   - **Files to Read**: List the most important files (with absolute paths) that the next agent should read first, with a brief reason for each
+   - **Suggested Exploration** (optional): If helpful, suggest specific searches or areas to explore (e.g., "Search for `FunctionName` in `src/`")
 
 Additionally create a "slug" for this handoff.  The "slug" is how we will refer to it later in a few places.  Examples:
 
@@ -92,6 +95,16 @@ The markdown file you write should follow this structure:
 
 ## 7. Next Step
 [Required next step, directly aligned with user's explicit handoff purpose]
+
+## 8. Bootstrap Context
+### Files to Read
+[List the most important files the next agent should read first, with brief reasons]
+- `/path/to/file.ts` - [why this file matters]
+
+### Suggested Exploration (optional)
+[If helpful, suggest specific searches or areas to explore]
+- Search for `PatternName` in `src/`
+- Review the test files in `path/to/tests/`
 ```
 
 ### User Confirmation
