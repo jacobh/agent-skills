@@ -35,8 +35,6 @@ Use bash's `$'...'` syntax to embed literal newlines in the commit message. This
 gt create --no-interactive -m $'Short summary of changes\n\nLonger explanation of why this change was made, any relevant context, etc.\n\n- Bullet points work too'
 ```
 
-Note: Do NOT use multiple `-m` flags with empty strings (`-m ""`). Graphite doesn't handle this correctly and will produce malformed arguments.
-
 ### Skipping hooks
 
 To skip pre-commit hooks, use `--no-verify`. Note that Graphite uses `--no-verify`, not `-n` (which is what `git commit` uses).
