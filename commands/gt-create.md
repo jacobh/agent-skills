@@ -25,22 +25,26 @@ Create a new Graphite branch with the current changes using `gt create`.
 
 - Write a clear, concise commit message based on the staged changes
 - First line should be a short summary (50 chars or less ideally)
-- If more context is needed, add additional `-m` flags for body paragraphs
+- If more context is needed, include a body separated by a blank line
 
 ### Multiline commit messages
 
-To pass a multiline commit message, use multiple `-m` flags:
+Use bash's `$'...'` syntax to embed literal newlines in the commit message. This properly interprets `\n` as actual newlines:
 
 ```bash
-gt create --no-interactive -m "Short summary of changes" -m "Longer explanation of why this change was made, any relevant context, etc."
+gt create --no-interactive -m $'Short summary of changes\n\nLonger explanation of why this change was made, any relevant context, etc.\n\n- Bullet points work too'
 ```
 
-Each `-m` flag adds a new paragraph to the commit message.
+Note: Do NOT use multiple `-m` flags with empty strings (`-m ""`). Graphite doesn't handle this correctly and will produce malformed arguments.
+
+### Skipping hooks
+
+To skip pre-commit hooks, use `--no-verify`. Note that Graphite uses `--no-verify`, not `-n` (which is what `git commit` uses).
 
 ### Command format
 
 ```bash
-git add -A && gt create --no-interactive -m "summary" -m "optional body"
+git add -A && gt create --no-interactive --no-verify -m $'summary\n\noptional body'
 ```
 
 If the user provided specific instructions via `$ARGUMENTS`, incorporate them into the commit message. Otherwise, derive an appropriate message from the changes.
