@@ -18,8 +18,12 @@ Graphite is a CLI tool and web platform for managing stacked pull requests. It w
 
 Create a new Graphite branch with the current changes using `gt create`.
 
-1. First, stage all changes with `git add -A`
-2. Then run `gt create` with the `--no-interactive` flag and a commit message
+Run `gt create` with:
+- `-a` flag to stage all changes (no need for separate `git add`)
+- `--no-interactive` flag
+- A commit message
+
+**Note:** When surgically staging specific files or hunks, use `git add` manually instead of `-a`.
 
 ### Commit message guidelines
 
@@ -32,7 +36,7 @@ Create a new Graphite branch with the current changes using `gt create`.
 Use bash's `$'...'` syntax to embed literal newlines in the commit message. This properly interprets `\n` as actual newlines:
 
 ```bash
-gt create --no-interactive -m $'Short summary of changes\n\nLonger explanation of why this change was made, any relevant context, etc.\n\n- Bullet points work too'
+gt create -a --no-interactive -m $'Short summary of changes\n\nLonger explanation of why this change was made, any relevant context, etc.\n\n- Bullet points work too'
 ```
 
 ### Skipping hooks
@@ -42,7 +46,11 @@ To skip pre-commit hooks, use `--no-verify`. Note that Graphite uses `--no-verif
 ### Command format
 
 ```bash
-git add -A && gt create --no-interactive --no-verify -m $'summary\n\noptional body'
+# Stage all changes
+gt create -a --no-interactive --no-verify -m $'summary\n\noptional body'
+
+# Or stage specific files first
+git add src/foo.ts src/bar.ts && gt create --no-interactive --no-verify -m $'summary'
 ```
 
 If the user provided specific instructions via `$ARGUMENTS`, incorporate them into the commit message. Otherwise, derive an appropriate message from the changes.
