@@ -1,3 +1,10 @@
+---
+name: pickup
+description: Resume work from a previous handoff session. Use when the user says pickup, wants to continue previous work, or mentions a handoff file. Lists available handoffs from .claude/handoffs/ or loads a specific one to continue where the previous session left off.
+---
+
+# Pickup
+
 Resumes work from a previous handoff session which are stored in `.claude/handoffs`.
 
 The handoff folder might not exist if there are none.
@@ -8,10 +15,9 @@ Requested handoff file: `$ARGUMENTS`
 
 ### 1. Check handoff file
 
-If no handoff file was provided, list them all.  Eg:
+If no handoff file was provided, list them all. Eg:
 
-
-```
+```bash
 echo "## Available Handoffs"
 echo ""
 for file in .claude/handoffs/*.md; do
@@ -27,7 +33,7 @@ echo "To pickup a handoff, use: /pickup <filename>"
 
 ### 2. Read handoff file
 
-If a handoff file was provided locate it in `.claude/handoffs` and read it.  Note that this file might be misspelled or the user might have only partially listed it.  If there are multiple matches, ask the user which one they want to continue with.
+If a handoff file was provided locate it in `.claude/handoffs` and read it. Note that this file might be misspelled or the user might have only partially listed it. If there are multiple matches, ask the user which one they want to continue with.
 
 ### 2.5. Gather Context
 

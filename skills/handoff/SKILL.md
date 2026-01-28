@@ -1,10 +1,17 @@
+---
+name: handoff
+description: Create a detailed handoff document for continuing work in a new session. Use when the user says handoff, wants to save their progress, needs to continue later, or is ending a session with unfinished work. Writes a comprehensive summary to .claude/handoffs/ for pickup by a future agent.
+---
+
+# Handoff
+
 Creates a detailed handoff plan of the conversation for continuing the work in a new session.
 
 The user specified purpose:
 
 <purpose>$ARGUMENTS</purpose>
 
-You are creating a summary specifically so that it can be continued by another agent.  For this to work you MUST have a purpose.  If no specified purpose was provided in the `<purpose>...</purpose>` tag you must STOP IMMEDIATELY and ask the user what the purpose is.
+You are creating a summary specifically so that it can be continued by another agent. For this to work you MUST have a purpose. If no specified purpose was provided in the `<purpose>...</purpose>` tag you must STOP IMMEDIATELY and ask the user what the purpose is.
 
 Do not continue before asking for the purpose as you will otherwise not understand the instructions and do not assume a purpose!
 
@@ -37,15 +44,15 @@ Your plan should include the following sections:
    - **Files to Read**: List the most important files (with absolute paths) that the next agent should read first, with a brief reason for each
    - **Suggested Exploration** (optional): If helpful, suggest specific searches or areas to explore (e.g., "Search for `FunctionName` in `src/`")
 
-Additionally create a "slug" for this handoff.  The "slug" is how we will refer to it later in a few places.  Examples:
+Additionally create a "slug" for this handoff. The "slug" is how we will refer to it later in a few places. Examples:
 
 * current-user-api-handler
 * implement-auth
 * fix-issue-42
 
-Together with the slug create a "Readable Summary".  Examples:
+Together with the slug create a "Readable Summary". Examples:
 
-* Implement Currnet User API Handler
+* Implement Current User API Handler
 * Implement Authentication
 * Fix Issue #42
 

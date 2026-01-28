@@ -1,7 +1,9 @@
 ---
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git diff:*), Bash(gt create:*)
-description: Create a Graphite branch with staged changes
+name: gt-create
+description: Create a Graphite branch with staged changes. Use when the user mentions Graphite, gt create, stacked PRs, or wants to create a branch for review using Graphite's workflow. Runs gt create with appropriate flags and commit message.
 ---
+
+# Graphite Branch Creation
 
 ## Background
 
