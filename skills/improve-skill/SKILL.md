@@ -1,155 +1,144 @@
 ---
 name: improve-skill
-description: "Analyze coding agent session transcripts to improve existing skills or create new ones. Use when asked to improve a skill based on a session, or extract a new skill from session history."
+description: Extract learnings from session transcripts or notes and incorporate them into existing skills or create new ones. Use when the user has analysis documents, session learnings, or patterns they want to formalize into reusable skill content.
 ---
 
 # Improve Skill
 
-This skill helps analyze coding agent sessions to improve or create skills. It works with Claude Code, Pi, and Codex session files.
+Transforms session learnings, analysis documents, and discovered patterns into structured skill improvements.
 
-## Quick Start
+## When to Use
 
-Extract the current session and generate an improvement prompt:
+- User has notes/documents with learnings from a deep work session
+- User wants to update an existing skill with new patterns discovered
+- User wants to create a new skill from accumulated knowledge
+- User says "improve skill", "update skill", "add to skill", "skill learnings"
 
+## Process
+
+### 1. Gather Context
+
+Identify the inputs:
+- **Learnings source**: Session notes, analysis docs, conversation history
+- **Target skill**: Existing skill to improve, or create new
+- **Scope**: What categories of learnings (patterns, anti-patterns, workflows, reference data)
+
+If the user hasn't specified a target skill, ask:
+- Is this for an existing skill? Which one?
+- Or should this become a new skill?
+
+### 2. Read Existing Skill (if improving)
+
+Read the target skill's files:
 ```bash
-# Auto-detect agent and extract current session
-./scripts/extract-session.js
+ls -la <skill-directory>/
+cat <skill-directory>/SKILL.md
+# Read any additional reference files
 ```
 
-## Session Extraction
+Understand the current structure before proposing changes.
 
-The `extract-session.js` script finds and parses session files from any of the three agents:
+### 3. Extract Learnings
 
+From the source documents, identify:
+
+| Category | What to Extract |
+|----------|-----------------|
+| **Patterns** | Recurring solutions, resolution strategies, code idioms |
+| **Anti-patterns** | Common mistakes, things that don't work |
+| **Classifications** | Module categories, conflict types, file groupings |
+| **Reference data** | Tables, mappings, inventories |
+| **Workflows** | Step-by-step procedures, checklists |
+| **Verification** | Commands to validate, checks to run |
+
+### 4. Decide on Structure
+
+**For small additions** (< 50 lines):
+- Add directly to SKILL.md in appropriate section
+
+**For substantial additions** (50-200 lines):
+- Create new section in SKILL.md with summary
+- Consider separate reference file if content is lookup-oriented
+
+**For large additions** (> 200 lines):
+- Create separate .md file (e.g., MODULES.md, PATTERNS.md)
+- Add brief reference in SKILL.md pointing to the new file
+- Use progressive disclosure pattern
+
+### 5. Apply Updates
+
+Follow these principles:
+
+1. **Preserve existing structure** - Add to existing sections when possible
+2. **Use consistent terminology** - Match the skill's existing voice/terms
+3. **Keep SKILL.md scannable** - Move reference tables to separate files
+4. **Add context on when to use** - New content should explain its trigger
+5. **Update description if needed** - If scope changed, update frontmatter
+
+### 6. Verify
+
+After making changes:
 ```bash
-# Auto-detect (uses most recent session for current working directory)
-./scripts/extract-session.js
+# Check file exists and is valid
+cat <skill-directory>/SKILL.md | head -20
 
-# Specify agent type
-./scripts/extract-session.js --agent claude
-./scripts/extract-session.js --agent pi
-./scripts/extract-session.js --agent codex
+# Verify frontmatter is valid YAML
+# - name: lowercase, hyphens, max 64 chars
+# - description: non-empty, max 1024 chars
 
-# Specify a different working directory
-./scripts/extract-session.js --cwd /path/to/project
-
-# Use a specific session file
-./scripts/extract-session.js /path/to/session.jsonl
+# Check for broken internal links
+rg "\[.*\]\(.*\.md\)" <skill-directory>/
 ```
 
-**Session file locations:**
-- **Claude Code**: `~/.claude/projects/<encoded-cwd>/*.jsonl`
-- **Pi**: `~/.pi/agent/sessions/<encoded-cwd>/*.jsonl`
-- **Codex**: `~/.codex/sessions/YYYY/MM/DD/*.jsonl`
+## Output Format
 
-## Workflow: Improve an Existing Skill
+Present changes as:
 
-When asked to improve a skill based on a session:
+1. **Summary** - What was added/changed
+2. **Rationale** - Why this structure was chosen
+3. **Files modified** - List of files changed
+4. **Skill description update** - If the description should change
 
-1. **Extract the session transcript:**
+## Guidelines
+
+- **Be concise**: Only add what Claude doesn't already know
+- **Prefer tables**: For reference data, classifications, mappings
+- **Use examples**: Concrete over abstract
+- **One level deep**: Reference files should link from SKILL.md, not from each other
+- **Test mentally**: Would this help Claude in a future session?
+
+## Creating New Skills
+
+If creating a new skill rather than improving existing:
+
+1. Choose location:
+   - `~/.claude/skills/<name>/` - Personal, all projects
+   - `.claude/skills/<name>/` - Project-specific
+
+2. Create directory and SKILL.md:
    ```bash
-   ./scripts/extract-session.js > /tmp/session-transcript.txt
+   mkdir -p <location>/<skill-name>
    ```
 
-2. **Find the existing skill** in one of these locations:
-   - `~/.codex/skills/<skill-name>/SKILL.md`
-   - `~/.claude/skills/<skill-name>/SKILL.md`
-   - `~/.pi/agent/skills/<skill-name>/SKILL.md`
+3. Write SKILL.md with:
+   ```markdown
+   ---
+   name: <lowercase-with-hyphens>
+   description: <what it does and when to trigger, max 1024 chars>
+   ---
 
-3. **Generate an improvement prompt** for a new session:
+   # <Skill Title>
 
-```
-═══════════════════════════════════════════════════════════════════════════════
-COPY THE FOLLOWING PROMPT INTO A NEW AGENT SESSION:
-═══════════════════════════════════════════════════════════════════════════════
+   <Brief description>
 
-I need to improve the "<skill-name>" skill based on a session where I used it.
+   ## When to Use
+   <Trigger conditions>
 
-First, read the current skill at: <path-to-skill>
+   ## Process
+   <Step-by-step workflow>
 
-Then analyze this session transcript to understand:
-- Where I struggled to use the skill correctly
-- What information was missing from the skill
-- What examples would have helped
-- What I had to figure out on my own
-
-<session_transcript>
-<paste transcript here>
-</session_transcript>
-
-Based on this analysis, improve the skill by:
-1. Adding missing instructions or clarifications
-2. Adding examples for common use cases discovered
-3. Fixing any incorrect guidance
-4. Making the skill more concise where possible
-
-Write the improved skill back to the same location.
-
-═══════════════════════════════════════════════════════════════════════════════
-```
-
-## Workflow: Create a New Skill
-
-When asked to create a new skill from a session:
-
-1. **Extract the session transcript:**
-   ```bash
-   ./scripts/extract-session.js > /tmp/session-transcript.txt
+   ## Guidelines
+   <Key principles>
    ```
 
-2. **Generate a creation prompt** for a new session:
-
-```
-═══════════════════════════════════════════════════════════════════════════════
-COPY THE FOLLOWING PROMPT INTO A NEW AGENT SESSION:
-═══════════════════════════════════════════════════════════════════════════════
-
-Analyze this session transcript to extract a reusable skill called "<skill-name>":
-
-<session_transcript>
-<paste transcript here>
-</session_transcript>
-
-Create a new skill that captures:
-1. The core capability or workflow demonstrated
-2. Key commands, APIs, or patterns used
-3. Common pitfalls and how to avoid them
-4. Example usage for typical scenarios
-
-Write the skill to: ~/.codex/skills/<skill-name>/SKILL.md
-
-Use this format:
----
-name: <skill-name>
-description: "<one-line description>"
----
-
-# <Skill Name> Skill
-
-<overview and quick reference>
-
-## <Section for each major capability>
-
-<instructions and examples>
-
-═══════════════════════════════════════════════════════════════════════════════
-```
-
-## Why a Separate Session?
-
-The improvement prompt is meant to be copied into a **fresh agent session** because:
-
-1. **Token efficiency** - The current session already has a lot of context; starting fresh means only the transcript and skill are loaded
-2. **Clean analysis** - The new session can focus purely on improvement without being influenced by the current task
-3. **Reproducibility** - The prompt is self-contained and can be shared or reused
-
-## Tips for Good Skill Improvements
-
-When analyzing a transcript, look for:
-
-- **Confusion patterns** - Where did the agent retry or change approach?
-- **Missing examples** - What specific commands or code patterns were discovered?
-- **Workarounds** - What did the agent have to figure out that wasn't documented?
-- **Errors** - What failed and how was it resolved?
-- **Successful patterns** - What worked well and should be highlighted?
-
-Keep skills concise - focus on the most important information and examples.
+4. Add reference files as needed for large content blocks
