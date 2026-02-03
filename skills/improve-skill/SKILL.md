@@ -23,6 +23,8 @@ Identify the inputs:
 - **Target skill**: Existing skill to improve, or create new
 - **Scope**: What categories of learnings (patterns, anti-patterns, workflows, reference data)
 
+**If the user references a past session** (e.g. "the session where we did X", "the session on branch Y"), you'll need to locate and read the session transcript from disk. See [SESSION-FILES.md](SESSION-FILES.md) for how to find and read Claude Code session files.
+
 If the user hasn't specified a target skill, ask:
 - Is this for an existing skill? Which one?
 - Or should this become a new skill?
