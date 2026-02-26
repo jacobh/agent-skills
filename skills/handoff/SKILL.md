@@ -56,6 +56,119 @@ Together with the slug create a "Readable Summary". Examples:
 * Implement Authentication
 * Fix Issue #42
 
+## Quality Guidelines
+
+These guidelines are derived from analysis of 67+ real handoffs. Follow them to produce handoffs that the picking-up agent can act on immediately.
+
+### Calibrate Verbosity to Task Complexity
+
+Not every handoff needs 200+ lines. Match depth to the task:
+
+| Task complexity | Handoff size | Example |
+|----------------|-------------|---------|
+| One-line fix (remove a filter, change a constant) | ~50 lines — collapse §2-4 | "Remove filter on line 681 of sync-service.ts" |
+| Targeted change (add a method, modify a type) | ~100-150 lines | Standard template |
+| Multi-file refactor or new feature | ~150-250 lines | Full template with code snippets |
+| Design decision or investigation | ~150-200 lines | Emphasis on §4 and §7 |
+
+### Code Snippets: Be Surgical
+
+Code snippets are the most valuable part of a handoff — when used well. Follow these rules:
+
+- **DO include**: Interfaces/types to implement against, patterns to follow ("follow the existing `isMergeInProgress` implementation at lines 343-350"), exact code to write in §7
+- **DO include**: Before/after comparisons, field mapping tables, comparison tables
+- **DON'T include**: Full interface definitions when only 2-3 fields are relevant — use `// ... other fields omitted` with a file+line reference
+- **DON'T include**: Full function bodies for code being *deleted* — a line range reference is sufficient
+- **DON'T include**: Code already visible by reading the file — reference the file+line instead
+
+**Best pattern**: Quote the *relevant excerpt* and point to the file for full context:
+```typescript
+// From src/services/sync-service.ts lines 79-82
+interface ISyncService {
+  getUnsyncedPRs(): Promise<UnsyncedPR[]>;  // <-- add this method
+  // ... 15 other methods omitted
+}
+```
+
+### Verify Before Handing Off
+
+**State facts, not guesses.** Never write "likely" or "probably" — read the file and confirm.
+
+- ❌ "The state machine **likely** still has `parsedUrl: GitHubPRRef`"
+- ✅ "The state machine at line 45 of `CherryPickWizardScreen.tsx` uses `parsedUrl: GitHubPRRef` (singular)"
+
+**Don't hand off prematurely.** If the next step is "try running the command again," do that first. Only hand off when there's meaningful work for the next agent.
+
+### Section-Specific Guidance
+
+**§4 Problem Solving** — When there are no problems, document **assumptions and risks** instead:
+- ❌ "No problems encountered."
+- ✅ "No problems encountered. Key assumptions: (1) CHERRY_PICK_HEAD behaves like MERGE_HEAD for progress detection, (2) MockGitClient needs no special cherry-pick state tracking."
+
+**§5 vs §7 — Distinguish clearly:**
+- §5 (Pending Tasks) = all remaining work *after* the handoff is completed
+- §7 (Next Step) = the *immediate first action* for the picking-up agent
+- When they're the same (single-task handoff), §5 should say "See Next Step"
+
+**§7 Next Step — Make recommendations, don't defer decisions:**
+- ❌ "Analyze the difference between X and Y to determine which approach to use"
+- ✅ "Recommended approach: Option B — have the wizard stage files before calling `checkAndCommitIfResolved`. Rationale: ..."
+- If you genuinely can't decide, flag it: "⚠️ Design decision needed — ask the user before proceeding"
+
+**§7 for investigations — Rank hypotheses by likelihood:**
+- ❌ Four investigation paths listed without prioritization
+- ✅ "Most likely cause (80%): shared terminal state between tests. Start by checking test isolation. Fallback: OpenTUI scrollbar rendering logic."
+
+**§7 for open questions — Suggest a default:**
+- ❌ "Question: Should cherry-pick PRs be recorded in the sync database?"
+- ✅ "Question: Should cherry-pick PRs be recorded in the sync database? Default to: yes, record them, since they need to appear in the unsynced count. Confirm with the user."
+
+### Bootstrap Context (Section 8) — Required
+
+This section is **mandatory**. It's the single highest-leverage section for pickup-ability.
+
+**Files to Read rules:**
+- Use **absolute paths** — the picking-up agent shouldn't have to guess
+- **Validate paths exist** before writing them (wrong paths waste pickup time)
+- Include **line numbers or function names** when pointing to specific code: "`convertToUpstreamPR` at ~line 250"
+- Order by importance — most critical file first
+- 3-6 files is the sweet spot; more than 8 means you're listing too many
+- Always include relevant **test files** — the picking-up agent needs to know testing patterns
+
+**Suggested Exploration rules:**
+- Use project-appropriate tools (e.g., `rg` not `grep` if the project requires it)
+- Include a verification command (e.g., `bun run check -- --no-progress`) so the agent can confirm current state
+- Be specific: `rg "cherryPick" src/services/` not "search for cherry-pick usage"
+
+### Check Status
+
+Always state whether the project's check/test suite passes at handoff time:
+- ✅ "All checks pass (`bun run check -- --no-progress` is green)"
+- ✅ "TypeScript compiles clean. 2 snapshot tests need updating (intentional changes)"
+- ✅ "3 lint errors remain in `Step3.tsx` — these are the pending work"
+
+### Related Handoffs
+
+When this handoff is part of a sequence or depends on prior work, note it:
+- "Follows: `2026-01-13-impl-get-unsynced-prs.md`"
+- "Prerequisite: The SyncService TTL logic from `2026-01-21-sync-service-ttl.md` must be completed first"
+
+### Slug Naming
+
+Good slugs are:
+- **Kebab-case** — no camelCase or PascalCase embedded (`sync-db-upstream-pr-pipeline` not `sync-db-UpstreamPR-pipeline`)
+- **Under 40 characters** — `replace-pr-types-cherry-pick` not `replace-pullrequest-with-upstreampr-in-cherry-pick-wizard`
+- **Action-oriented** — use verbs: `impl-`, `fix-`, `debug-`, `refactor-`, `add-`
+- **Domain-specific** — describe what changed, not internal milestones (`sync-db-upstream-pr-pipeline` not `sync-db-step-2`)
+- **Distinct** — avoid near-duplicate names on the same date
+- **Consistent verb style** — pick `impl-` or `implement-`, don't alternate
+
+### Avoid Repeating Shared Context
+
+When multiple handoffs exist for the same feature, don't repeat the full feature description each time. Reference a canonical source:
+- ✅ "See `docs/sync-database-design.md` §4 for the full design"
+- ❌ (Pasting the same 15-line feature requirements block in every handoff)
+
 ## Output
 
 **IMPORTANT: Do NOT output the full handoff plan to the chat.** Write directly to the file.
@@ -85,33 +198,38 @@ The markdown file you write should follow this structure:
 - **Changes made**: [Summary of the changes made to this file, if any]
 - **Code snippet**:
 \`\`\`language
-[Important Code Snippet]
+[Important Code Snippet — only the relevant excerpt, not the full file]
 \`\`\`
 
 ### [File Name 2]
 ...
 
 ## 4. Problem Solving
-[Description of solved problems and ongoing troubleshooting]
+[Description of solved problems and ongoing troubleshooting. If no problems, document assumptions and risks instead.]
 
 ## 5. Pending Tasks
-[Any pending tasks explicitly requested]
+[Remaining work after the immediate next step is completed. If this is a single-task handoff, say "See Next Step."]
 
 ## 6. Current Work
 [What was being worked on immediately before handoff]
 
 ## 7. Next Step
-[Required next step, directly aligned with user's explicit handoff purpose]
+[Required next step, directly aligned with user's explicit handoff purpose. Include recommendations, not deferred decisions. For investigations, rank hypotheses by likelihood.]
 
 ## 8. Bootstrap Context
-### Files to Read
-[List the most important files the next agent should read first, with brief reasons]
-- `/path/to/file.ts` - [why this file matters]
 
-### Suggested Exploration (optional)
-[If helpful, suggest specific searches or areas to explore]
-- Search for `PatternName` in `src/`
-- Review the test files in `path/to/tests/`
+**Check status**: [Does `bun run check` pass? What's the current state?]
+
+**Related handoffs**: [Any prerequisite or follow-up handoffs, if applicable]
+
+### Files to Read
+[3-6 most important files with absolute paths and brief reasons. Include test files.]
+- `/absolute/path/to/file.ts` (lines 79-115) - [why this file matters]
+
+### Suggested Exploration
+[Specific searches and verification commands]
+- `rg "PatternName" src/services/`
+- `bun run check -- --no-progress`
 ```
 
 ### User Confirmation
