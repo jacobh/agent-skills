@@ -33,9 +33,11 @@
 ## Python Tools
 - when working with python, unless a specific project specifies otherwise, always prefer using `uv` for tooling
 
-## Task Tool Usage
-- when using the `Task` tool, always strive to use tasks in parallel as much as possible
-- avoid serial, sequential task processing - launch multiple independent tasks concurrently for better performance
+## Subagent Usage
+- **Direct tool calls can already run in parallel** — multiple Read/Bash calls in a single function_calls block execute concurrently. This is the default for simple parallelism.
+- **Use subagents only for substantial, self-contained work units** that require multi-step reasoning, multiple tool calls, or producing artifacts (e.g. "implement this feature", "investigate this bug and propose a fix", "review this code").
+- **Never use subagents for single-tool-call tasks** like reading a file, running a command, or searching. Use the direct tool instead.
+- When subagents are the right choice, prefer parallel over sequential execution for independent tasks.
 
 ## Communication Guidelines
 - in instances of ambiguity, prefer to ask the human (me) questions rather than make assumptions. I'd rather we discuss and get it right
