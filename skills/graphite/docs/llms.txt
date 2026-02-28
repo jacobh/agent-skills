@@ -1,0 +1,98 @@
+# Graphite
+
+## Docs
+
+- [Advanced Tutorials](https://graphite-58cc94ce.mintlify.dev/docs/advanced-tutorials.md): Take it to the next level with advanced CLI commands.
+- [LLM-Friendly Documentation](https://graphite-58cc94ce.mintlify.dev/docs/ai-ingestion.md): Optimized formats of Graphite Documentation for ingestion as context for LLMs and AI tools.
+- [AI Privacy and Security](https://graphite-58cc94ce.mintlify.dev/docs/ai-privacy-and-security.md): Graphite offers a handful of AI features to automate parts of the developer workflow. These features are opt-in and do not store or train on your data.
+- [Review comments](https://graphite-58cc94ce.mintlify.dev/docs/ai-review-comments.md): Understanding Graphite Agent's feedback and how to get the most value from it
+- [Customization](https://graphite-58cc94ce.mintlify.dev/docs/ai-review-customization.md): Tailor AI reviews to your team's specific needs and coding standards
+- [Experimental comments](https://graphite-58cc94ce.mintlify.dev/docs/ai-review-experimental-comments.md): Learn about experimental AI review comments and how to provide feedback
+- [AI Reviews](https://graphite-58cc94ce.mintlify.dev/docs/ai-reviews.md): Catch bugs before they ship to production with AI code review
+- [Setup & configuration](https://graphite-58cc94ce.mintlify.dev/docs/ai-reviews-setup.md): Get started with AI reviews in under 5 minutes
+- [Authenticate With GitHub](https://graphite-58cc94ce.mintlify.dev/docs/authenticate-with-github-app.md): Graphite is built on top of GitHub's APIs, so you need to provide Graphite access to your GitHub resources to create, review, and merge PRs.
+- [Automations](https://graphite-58cc94ce.mintlify.dev/docs/automations.md): Learn how to automate tedious code review tasks like assigning reviewers, adding labels, and more with automations.
+- [Basic Tutorials](https://graphite-58cc94ce.mintlify.dev/docs/basic-tutorials.md): Understand the core CLI commands.
+- [Best Practices For Reviewing Stacked PRs](https://graphite-58cc94ce.mintlify.dev/docs/best-practices-for-reviewing-stacks.md): Learn best practices to keep in mind when reviewing PRs in a stack.
+- [Use Beta CLI Releases](https://graphite-58cc94ce.mintlify.dev/docs/beta-cli.md): Join the Graphite CLI beta test group for early access to the newest features.
+- [Billing & plans](https://graphite-58cc94ce.mintlify.dev/docs/billing-plans.md): Learn about the Graphite plans for teams.
+- [Command Cheatsheet](https://graphite-58cc94ce.mintlify.dev/docs/cheatsheet.md)
+- [Use CLI Binaries](https://graphite-58cc94ce.mintlify.dev/docs/cli-binaries.md)
+- [CLI Changelog](https://graphite-58cc94ce.mintlify.dev/docs/cli-changelog.md): See the history of changes for the Graphite CLI.
+- [CLI Overview](https://graphite-58cc94ce.mintlify.dev/docs/cli-overview.md): Create, stack, and submit pull requests directly from the command line.
+- [Quick Start](https://graphite-58cc94ce.mintlify.dev/docs/cli-quick-start.md): Learn to create stacked pull requests with the Graphite CLI.
+- [Graphite CLI V1 Command Names](https://graphite-58cc94ce.mintlify.dev/docs/cli-v1-command-names.md): Discover Graphite CLI v1's revamped command names.
+- [Code Indexing](https://graphite-58cc94ce.mintlify.dev/docs/code-indexing.md): Graphite can index your code for short periods of time to improve performance of various features.
+- [Code Indexing Security](https://graphite-58cc94ce.mintlify.dev/docs/code-indexing-security.md): Graphite offers a secure code-indexing service which improves the performance of platform features. This feature is opt-in and no AI is trained on your data.
+- [Collaborate On A Stack](https://graphite-58cc94ce.mintlify.dev/docs/collaborate-on-a-stack.md): Learn how to work on shared collaborative stacks with other Graphite users.
+- [Command Reference](https://graphite-58cc94ce.mintlify.dev/docs/command-reference.md): This reference documents every command and flag available in Graphite’s command-line interface.
+- [Comparing Git And Gt](https://graphite-58cc94ce.mintlify.dev/docs/comparing-git-and-gt.md): Learn the key differences between working with the Graphite CLI vs. vanilla git.
+- [Configure The CLI](https://graphite-58cc94ce.mintlify.dev/docs/configure-cli.md): Learn how to configure the Graphite CLI to customize and speed up your workflow.
+- [Enable Signed Commits](https://graphite-58cc94ce.mintlify.dev/docs/configure-signed-commits.md): Learn how to enable commit signing in Graphite.
+- [Create A Pull Request](https://graphite-58cc94ce.mintlify.dev/docs/create-a-pull-request.md): Learn to use the Graphite CLI to create a single pull request.
+- [Create A Stack](https://graphite-58cc94ce.mintlify.dev/docs/create-stack.md): Learn how to create stacked branches with the Graphite CLI.
+- [Edit The Branch Order In A Stack](https://graphite-58cc94ce.mintlify.dev/docs/edit-branch-order.md): Learn how to edit the branch order in a stack using Graphite CLI commands.
+- [Evaluating Graphite](https://graphite-58cc94ce.mintlify.dev/docs/evaluating-graphite.md): Learn more about how to evaluate if Graphite is right for your team.
+- [Evaluating Tools For Stacking](https://graphite-58cc94ce.mintlify.dev/docs/evaluating-tools.md): Learn about the differences between Graphite and other tools for stacking pull requests.
+- [External Merge Queue Integration (Beta)](https://graphite-58cc94ce.mintlify.dev/docs/external-merge-queue-integration.md): Learn how to use Graphite with your existing external merge queue.
+- [FAQs](https://graphite-58cc94ce.mintlify.dev/docs/faqs.md): Questions? We've got answers.
+- [Feature Requests & Bugs](https://graphite-58cc94ce.mintlify.dev/docs/feature-requests-bugs.md): Learn how to easily share feature requests and bug reports with the Graphite team.
+- [Overview](https://graphite-58cc94ce.mintlify.dev/docs/get-started.md): Learn how to create, review, and merge stacked pull requests with Graphite.
+- [Use The Graphite Merge Queue](https://graphite-58cc94ce.mintlify.dev/docs/get-started-merge-queue.md): Learn how to use the Graphite merge queue in your repo.
+- [GitHub Autolinks](https://graphite-58cc94ce.mintlify.dev/docs/github-autolinks.md): Learn how to configure GitHub autolinks to automatically reference external resources like issue trackers in your pull requests on Graphite.
+- [Configure GitHub Repository Settings](https://graphite-58cc94ce.mintlify.dev/docs/github-configuration-guidelines.md): Learn how to configure your repository settings on GitHub for the best experience stacking with Graphite.
+- [GitHub Enterprise Server](https://graphite-58cc94ce.mintlify.dev/docs/github-enterprise-server.md): Learn how Graphite Enterprise customers can use Graphite with a GitHub Enterpise Server instance.
+- [User permissions](https://graphite-58cc94ce.mintlify.dev/docs/graphite-admin.md): Learn how to manage users and billing information for your organization as a Graphite admin.
+- [Graphite Chat](https://graphite-58cc94ce.mintlify.dev/docs/graphite-chat.md): Chat with an AI-powered conversational assistant for pull request review and collaboration
+- [Graphite for Startups](https://graphite-58cc94ce.mintlify.dev/docs/graphite-for-startups.md): For companies looking to grow with Graphite.
+- [Merge Queue](https://graphite-58cc94ce.mintlify.dev/docs/graphite-merge-queue.md): Learn how Graphite's merge queue can help your team merge stacks faster and reduce merge conflicts.
+- [GT MCP](https://graphite-58cc94ce.mintlify.dev/docs/gt-mcp.md): Use the Graphite CLI with AI agents through Model Context Protocol
+- [How To Structure A Stack](https://graphite-58cc94ce.mintlify.dev/docs/how-to-structure-your-stacks.md): Five helpful frameworks for breaking up large changes into stacked PRs.
+- [Insights](https://graphite-58cc94ce.mintlify.dev/docs/insights.md): Learn how to track your team's engineering velocity with Graphite Insights.
+- [Insights Data in Graphite](https://graphite-58cc94ce.mintlify.dev/docs/insights-data-missing.md): Learn how to ensure Graphite can compute insights for your repositories
+- [Insights Stats Definitions](https://graphite-58cc94ce.mintlify.dev/docs/insights-stats-definitions.md): Learn how the stats on Graphite insights are computed.
+- [Install & Authenticate The CLI](https://graphite-58cc94ce.mintlify.dev/docs/install-the-cli.md): Learn how to install & authenticate Graphite's CLI to start creating stacked pull requests.
+- [Integrations](https://graphite-58cc94ce.mintlify.dev/docs/integrations.md): Personalize your workflow by connecting Graphite to your favorite apps.
+- [Jira](https://graphite-58cc94ce.mintlify.dev/docs/jira.md): Learn how to integrate Graphite with Jira to view, link, and create issues associated with pull requests.
+- [Learn to Stack](https://graphite-58cc94ce.mintlify.dev/docs/learn-to-stack.md): A practical starter guide for trunk-based development and stacking.
+- [Legacy CLI Command Alias Preset](https://graphite-58cc94ce.mintlify.dev/docs/legacy-alias-preset.md): Copy legacy aliases to retain old command names & avoid deprecation warnings in Graphite CLI.
+- [Linear](https://graphite-58cc94ce.mintlify.dev/docs/linear.md): Learn how to integrate Graphite with Linear to view, link, and create issues associated with pull requests.
+- [Memes And Macros](https://graphite-58cc94ce.mintlify.dev/docs/memes-and-macros.md): Add some fun to your code reviews.
+- [Menu Bar App (Mac)](https://graphite-58cc94ce.mintlify.dev/docs/menu-bar-app.md): Keep track of all of your PRs from your Mac menu bar.
+- [Merge Pull Requests](https://graphite-58cc94ce.mintlify.dev/docs/merge-pull-requests.md): Learn how to seamlessly merge a single PR or stack of PRs with Graphite and handle merge conflicts efficiently.
+- [Merge Queue Optimizations](https://graphite-58cc94ce.mintlify.dev/docs/merge-queue-optimizations.md): Learn how to speed up your Graphite merge queue
+- [Merge A Stack Of PRs Manually](https://graphite-58cc94ce.mintlify.dev/docs/merge-stack-prs-github.md): Learn how to merge a stack of PRs outside of Graphite.
+- [Merge When Ready](https://graphite-58cc94ce.mintlify.dev/docs/merge-when-ready.md): Learn how to automatically merge PRs with Graphite once all branch protection rules have been met.
+- [Mergeability Status Check](https://graphite-58cc94ce.mintlify.dev/docs/mergeability-status-check.md): Prevent accidental mid-stack merges.
+- [Develop On Multiple Trunk Branches](https://graphite-58cc94ce.mintlify.dev/docs/multiple-trunks.md): Learn how to develop against multiple trunk branches with the Graphite CLI.
+- [Navigate A Stack](https://graphite-58cc94ce.mintlify.dev/docs/navigate-stack.md): Learn how to navigate stacked branches with the Graphite CLI.
+- [Onboarding FAQs](https://graphite-58cc94ce.mintlify.dev/docs/onboarding-troubleshooting.md): Answers to common questions when getting started with Graphite.
+- [Setting Up A Proof Of Concept](https://graphite-58cc94ce.mintlify.dev/docs/onboarding-your-team.md): Best practices for teams new to stacking with Graphite.
+- [PR Page overview](https://graphite-58cc94ce.mintlify.dev/docs/pr-page-overview.md): Learn how to review pull requests on Graphite.
+- [Pricing FAQ](https://graphite-58cc94ce.mintlify.dev/docs/pricing-faq.md): Your pricing questions, answered.
+- [Privacy & Security](https://graphite-58cc94ce.mintlify.dev/docs/privacy-and-security.md): Learn how Graphite prioritizes security to safeguard your source code.
+- [Pull Request Versions](https://graphite-58cc94ce.mintlify.dev/docs/pull-request-versions.md): Learn how to view the history of changes to a PR in Graphite using versions.
+- [Restack Branches](https://graphite-58cc94ce.mintlify.dev/docs/restack-branches.md): Learn to restack Git branches efficiently with Graphite's CLI.
+- [Set Up The Graphite Merge Queue](https://graphite-58cc94ce.mintlify.dev/docs/set-up-merge-queue.md)
+- [Set up merge queue integration](https://graphite-58cc94ce.mintlify.dev/docs/setup-merge-queue-integration.md): To allow users to merge stacks via the Graphite UI, Graphite needs to know who to hand off PRs to for merging
+- [Configure recommended CI settings](https://graphite-58cc94ce.mintlify.dev/docs/setup-recommended-ci-settings.md): Set up your GitHub repository's CI to work well with Graphite
+- [Slack Notifications](https://graphite-58cc94ce.mintlify.dev/docs/slack-notifications.md): Learn how to integrate Graphite with Slack to receive real-time, actionable notifications about your PRs.
+- [Squash, Fold, And Split Changes](https://graphite-58cc94ce.mintlify.dev/docs/squash-fold-split.md): Learn how to squash, fold, and split changes with the Graphite CLI.
+- [CI Optimizations](https://graphite-58cc94ce.mintlify.dev/docs/stacking-and-ci.md): Learn CI optimizations & best practices for stacked pull requests.
+- [Sync Changes From A Remote Repository](https://graphite-58cc94ce.mintlify.dev/docs/sync-with-a-remote-repo.md): Learn how to sync changes from a remote repository with Graphite's CLI, managing branch updates and conflicts.
+- [Track Branches](https://graphite-58cc94ce.mintlify.dev/docs/track-branches.md): Learn how to track git branches with the Graphite CLI.
+- [CLI Troubleshooting FAQs](https://graphite-58cc94ce.mintlify.dev/docs/troubleshooting.md): Tips for resolving common Graphite CLI issues.
+- [Introduction To Trunk Based Development](https://graphite-58cc94ce.mintlify.dev/docs/trunk-based-development.md): Learn more about trunk-based development's benefits, best practices, and comparison with Gitflow.
+- [Update The CLI](https://graphite-58cc94ce.mintlify.dev/docs/update-cli.md): Learn how to update the Graphite CLI.
+- [Update Mid Stack Branches](https://graphite-58cc94ce.mintlify.dev/docs/update-mid-stack-branches.md): Learn how to make changes to mid-stack branches and auto-restack seamlessly with Graphite CLI.
+- [Pull Request Inbox](https://graphite-58cc94ce.mintlify.dev/docs/use-pr-inbox.md): Think of the pull request inbox as an "email client" for your PRs—it helps you stay organized and view which PRs need your attention.
+- [VS Code Extension](https://graphite-58cc94ce.mintlify.dev/docs/vs-code-extension.md): Not a CLI person? Graphite's VS Code extension lets you create and manage stacked pull requests visually, right from your IDE.
+- [Configuration](https://graphite-58cc94ce.mintlify.dev/docs/vs-code-extension-configuration.md): Customize the Graphite VS Code extension.
+- [Create A Pull Request](https://graphite-58cc94ce.mintlify.dev/docs/vs-code-extension-first-pr.md): Learn to use the Graphite VS Code extension to create a single pull request.
+- [Create PRs For A Stack](https://graphite-58cc94ce.mintlify.dev/docs/vs-code-extension-first-stack.md): Learn to use the Graphite VS Code extension to create pull requests for a stack.
+- [Quick Start](https://graphite-58cc94ce.mintlify.dev/docs/vs-code-extension-quick-start.md): Get started using the Graphite VS Code extension to stack pull requests.
+- [Why You Should Use Graphite](https://graphite-58cc94ce.mintlify.dev/docs/why-you-should-use-graphite.md): One end-to-end tool to simplify and accelerate your team’s developer workflow.
+
+## OpenAPI Specs
+
+- [openapi](https://graphite-58cc94ce.mintlify.dev/docs/api-reference/openapi.json)
