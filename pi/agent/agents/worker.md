@@ -1,9 +1,8 @@
 ---
 name: worker
 description: >
-  General-purpose subagent for substantial, self-contained work units.
-  Use for tasks requiring multi-step reasoning, multiple tool calls, or producing artifacts.
-  Do NOT use for simple operations (reading files, running single commands, searching) — use direct tool calls instead, which already support parallel execution.
+  General-purpose subagent for substantial, self-contained work units requiring multi-step reasoning or producing artifacts.
+  Only use when the user explicitly requests subagent usage. Never invoke autonomously — direct tool calls are always preferred.
 
 ---
 
