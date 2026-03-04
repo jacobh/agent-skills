@@ -137,15 +137,7 @@ This section is **mandatory**. It's the single highest-leverage section for pick
 
 **Suggested Exploration rules:**
 - Use project-appropriate tools (e.g., `rg` not `grep` if the project requires it)
-- Include a verification command (e.g., `bun run check -- --no-progress`) so the agent can confirm current state
 - Be specific: `rg "cherryPick" src/services/` not "search for cherry-pick usage"
-
-### Check Status
-
-Always state whether the project's check/test suite passes at handoff time:
-- ✅ "All checks pass (`bun run check -- --no-progress` is green)"
-- ✅ "TypeScript compiles clean. 2 snapshot tests need updating (intentional changes)"
-- ✅ "3 lint errors remain in `Step3.tsx` — these are the pending work"
 
 ### Related Handoffs
 
@@ -218,8 +210,6 @@ The markdown file you write should follow this structure:
 
 ## 8. Bootstrap Context
 
-**Check status**: [Does `bun run check` pass? What's the current state?]
-
 **Related handoffs**: [Any prerequisite or follow-up handoffs, if applicable]
 
 ### Files to Read
@@ -229,7 +219,6 @@ The markdown file you write should follow this structure:
 ### Suggested Exploration
 [Specific searches and verification commands]
 - `rg "PatternName" src/services/`
-- `bun run check -- --no-progress`
 ```
 
 ### User Confirmation
