@@ -14,10 +14,10 @@
 ## TypeScript Tools
 
 #### Other TypeScript Rules:
-- Always use `tsc` directly, never with `npx`
+- Never use `npx` — use the project's package manager (bun, pnpm, etc.)
+- For type checking, prefer project-defined scripts (e.g. `bun run typecheck`) over raw `tsc`
+- If no script exists, run `tsc --noEmit` from the project root where tsconfig.json is located
 - Never use the `!` non-null assertion operator in TypeScript
-- Always run `tsc` from the project root where tsconfig.json is located
-- For type checking, ALWAYS use `tsc --noEmit` on the ENTIRE project
 - When writing typescript, avoid using `any` and strive to use the correct, canonical types
 
 ## Commit Assistance
