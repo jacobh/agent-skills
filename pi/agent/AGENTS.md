@@ -33,12 +33,6 @@
 ## Python Tools
 - when working with python, unless a specific project specifies otherwise, always prefer using `uv` for tooling
 
-## Subagent Usage
-- **Do NOT use subagents unless the user explicitly requests it.** Direct tool calls (Read, Bash, Edit, Write) can already run in parallel and are always preferred.
-- Subagents are valuable for substantial, self-contained work units that require multi-step reasoning, multiple tool calls, or producing artifacts (e.g. "implement this feature", "investigate this bug and propose a fix").
-- They are never appropriate for simple operations like reading files, running single commands, or searching.
-- When the user does request subagents, prefer parallel over sequential execution for independent tasks.
-
 ## Communication Guidelines
 - in instances of ambiguity, prefer to ask the human (me) questions rather than make assumptions. I'd rather we discuss and get it right
 - use the `AskUserQuestion` tool liberally while discussing and planning - it helps structure the conversation and ensures we're aligned before proceeding
