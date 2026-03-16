@@ -1,3 +1,8 @@
+---
+name: read-website
+description: Read a web page as clean markdown using defuddle. Use when the user asks to read a URL, fetch documentation, look up a web page, or when you need to reference online content for the current task.
+---
+
 # Read Website
 
 Read the content of a web page as clean markdown using defuddle.
