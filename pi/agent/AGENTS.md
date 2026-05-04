@@ -1,12 +1,7 @@
-# Claude Code Instructions
-
 ## Search Tools
 
 ### Search Tools Usage
 - **Use `rg` (ripgrep) as the primary search tool** for all searches in the codebase
-- **NEVER use traditional `grep`** - always use `rg` when text search is needed
-- **Prefer to use `rg` directly** instead of running `find` and then piping the result or using `-exec`
-- `rg` is fast, supports regex, and works well with all file types including source code
 
 ## File Manipulation
 - Prefer to use bash commands like `cp` and `mv` to move files around rather than reading a file and writing it manually
@@ -19,6 +14,7 @@
 - If no script exists, run `tsc --noEmit` from the project root where tsconfig.json is located
 - Never use the `!` non-null assertion operator in TypeScript
 - When writing typescript, avoid using `any` and strive to use the correct, canonical types
+- Minimise use of intersection types `&` instead prefer a compositional style
 
 ## Commit Assistance
 - when helping author commits, include no reference to claude or claude code
@@ -35,7 +31,6 @@
 
 ## Communication Guidelines
 - in instances of ambiguity, prefer to ask the human (me) questions rather than make assumptions. I'd rather we discuss and get it right
-- use the `AskUserQuestion` tool liberally while discussing and planning - it helps structure the conversation and ensures we're aligned before proceeding
 - Only make behavior configurable/optional when explicitly requested; otherwise replace the existing implementation with the requested implementation.
 
 ## Error Handling Style
