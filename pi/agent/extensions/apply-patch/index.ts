@@ -1,5 +1,5 @@
-import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { Text } from "@earendil-works/pi-tui";
+import { renderDiff as renderAnsiDiff, type ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { Container, Text } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
 import type { Static } from "typebox";
 import { mkdir, readFile, stat, unlink, writeFile } from "node:fs/promises";
@@ -59,6 +59,13 @@ type ApplyPatchDetails = {
 	preview: PreviewFile[];
 	stats: { additions: number; removals: number };
 };
+
+type ApplyPatchRenderState = {
+	details: ApplyPatchDetails;
+	status: "pending" | "applied" | "failed";
+};
+
+const renderStates = new Map<string, ApplyPatchRenderState>();
 
 class ApplyPatchError extends Error {
 	constructor(message: string) {
@@ -578,19 +585,64 @@ function detailsFromUnknown(details: unknown): ApplyPatchDetails | undefined {
 	return { affected: candidate.affected, preview: candidate.preview, stats: candidate.stats };
 }
 
-function renderDiff(diff: string, expanded: boolean, theme: Parameters<NonNullable<Parameters<ExtensionAPI["registerTool"]>[0]["renderResult"]>>[2]): string {
-	const limit = expanded ? 80 : 12;
-	const lines = diff.split("\n").filter((line) => line.length > 0);
-	const rendered = lines.slice(0, limit).map((line) => {
-		if (line.startsWith("+") && !line.startsWith("+++")) return theme.fg("success", line);
-		if (line.startsWith("-") && !line.startsWith("---")) return theme.fg("error", line);
-		if (line.startsWith("@@")) return theme.fg("accent", line);
-		return theme.fg("dim", line);
-	});
-	if (lines.length > limit) {
-		rendered.push(theme.fg("muted", `... ${lines.length - limit} more diff lines`));
+function renderApplyPatchPreview(
+	details: ApplyPatchDetails,
+	status: ApplyPatchRenderState["status"],
+	expanded: boolean,
+	theme: { fg(role: string, text: string): string; bold(text: string): string },
+): string {
+	const firstFile = details.preview[0];
+	const verb = status === "failed" ? "Edit failed" : status === "pending" ? "Patching" : firstFile && details.preview.length === 1 ? previewVerb(firstFile) : "Edited";
+	const target = firstFile && details.preview.length === 1 ? previewTarget(firstFile) : summarizeAffected(details.affected);
+	const prefix = theme.fg(status === "failed" ? "error" : "dim", "•");
+	let text = `${prefix} ${theme.bold(verb)} ${theme.fg("accent", target)}`;
+	text += ` ${theme.fg("success", `(+${details.stats.additions}`)} ${theme.fg("error", `-${details.stats.removals})`)}`;
+
+	if (!expanded) {
+		if (details.preview.length === 1) {
+			return text;
+		}
+		for (const [index, file] of details.preview.entries()) {
+			const linePrefix = index === 0 ? "  └ " : "    ";
+			const title = previewTarget(file);
+			text += `\n${theme.fg("dim", linePrefix)}${theme.fg("accent", title)} ${theme.fg("success", `(+${file.additions}`)} ${theme.fg("error", `-${file.removals})`)}`;
+		}
+		return text;
 	}
-	return rendered.join("\n");
+
+	for (const [index, file] of details.preview.entries()) {
+		const title = previewTarget(file);
+		if (index > 0) text += "\n";
+		text += `\n${theme.fg("dim", "  └ ")}${theme.fg("accent", title)} ${theme.fg("success", `(+${file.additions}`)} ${theme.fg("error", `-${file.removals})`)}`;
+		text += `\n${renderPreviewDiff(file.diff)}`;
+	}
+
+	return text;
+}
+
+function previewVerb(file: PreviewFile): string {
+	if (file.type === "add") return "Added";
+	if (file.type === "delete") return "Deleted";
+	return "Edited";
+}
+
+function previewTarget(file: PreviewFile): string {
+	return file.movePath ? `${file.path} → ${file.movePath}` : file.path;
+}
+
+function renderPreviewDiff(diff: string): string {
+	try {
+		return renderAnsiDiff(diff)
+			.split("\n")
+			.map((line) => `    ${line}`)
+			.join("\n");
+	} catch {
+		return diff
+			.split("\n")
+			.filter((line) => line.length > 0)
+			.map((line) => `    ${line}`)
+			.join("\n");
+	}
 }
 
 function printSummary(affected: AffectedPaths): string {
@@ -620,7 +672,7 @@ export default function applyPatchExtension(pi: ExtensionAPI) {
 			"apply_patch update hunks should include enough context to uniquely locate each change.",
 		],
 		parameters: PARAMETERS,
-		async execute(_toolCallId, params: ApplyPatchParams, _signal, onUpdate, ctx) {
+		async execute(toolCallId, params: ApplyPatchParams, _signal, onUpdate, ctx) {
 			try {
 				const hunks = parsePatch(params.patch);
 				const affected: AffectedPaths = { added: [], modified: [], deleted: [] };
@@ -630,6 +682,7 @@ export default function applyPatchExtension(pi: ExtensionAPI) {
 					preview.push(...buildPreview(changes));
 					const previewAffected = affectedFromPreview(preview);
 					const stats = previewStats(preview);
+					renderStates.set(toolCallId, { details: { affected: previewAffected, preview: [...preview], stats }, status: "pending" });
 					onUpdate?.({
 						content: [{ type: "text", text: `Preview: ${summarizeAffected(previewAffected)} (+${stats.additions} -${stats.removals})` }],
 						details: { affected: previewAffected, preview, stats },
@@ -640,12 +693,17 @@ export default function applyPatchExtension(pi: ExtensionAPI) {
 					affected.deleted.push(...nextAffected.deleted);
 				}
 				const stats = previewStats(preview);
+				renderStates.set(toolCallId, { details: { affected, preview, stats }, status: "applied" });
 				const output = printSummary(affected);
 				return {
 					content: [{ type: "text", text: output }],
 					details: { affected, preview, stats },
 				};
 			} catch (error) {
+				const existing = renderStates.get(toolCallId);
+				if (existing) {
+					renderStates.set(toolCallId, { ...existing, status: "failed" });
+				}
 				return {
 					content: [{ type: "text", text: `Error: ${errorMessage(error)}` }],
 					details: { error: errorMessage(error) },
@@ -653,42 +711,32 @@ export default function applyPatchExtension(pi: ExtensionAPI) {
 				};
 			}
 		},
-		renderCall(args, theme, _context) {
-			let text = theme.fg("toolTitle", theme.bold("apply_patch "));
+		renderCall(args, theme, context) {
+			if (context.argsComplete === false) {
+				return new Text(`${theme.fg("dim", "•")} ${theme.bold("Patching")}`, 0, 0);
+			}
+
+			const cached = renderStates.get(context.toolCallId);
+			if (cached) {
+				return new Text(renderApplyPatchPreview(cached.details, cached.status, context.expanded, theme), 0, 0);
+			}
+
+			let text = `${theme.fg("dim", "•")} ${theme.bold("Patching")}`;
 			try {
 				const hunks = parsePatch(String(args.patch ?? ""));
-				text += theme.fg("accent", summarizeHunks(hunks));
+				text += ` ${theme.fg("accent", summarizeHunks(hunks))}`;
 			} catch {
-				text += theme.fg("warning", "patch");
+				text += ` ${theme.fg("warning", "patch")}`;
 			}
 			return new Text(text, 0, 0);
 		},
-		renderResult(result, { expanded, isPartial }, theme, _context) {
+		renderResult(result, { isPartial }, theme, _context) {
 			const content = result.content[0];
 			if (content?.type === "text" && content.text.startsWith("Error:")) {
 				return new Text(theme.fg("error", content.text.split("\n")[0] ?? content.text), 0, 0);
 			}
 
-			const details = detailsFromUnknown(result.details);
-			if (!details) {
-				return new Text(isPartial ? theme.fg("warning", "Previewing patch...") : theme.fg("success", "Applied"), 0, 0);
-			}
-
-			let text = isPartial ? theme.fg("warning", "Preview ") : theme.fg("success", "Applied ");
-			text += theme.fg("accent", summarizeAffected(details.affected));
-			text += theme.fg("success", ` +${details.stats.additions}`);
-			text += theme.fg("dim", " /");
-			text += theme.fg("error", ` -${details.stats.removals}`);
-
-			if (expanded) {
-				for (const file of details.preview) {
-					const title = file.movePath ? `${file.path} → ${file.movePath}` : file.path;
-					text += `\n${theme.fg("toolTitle", title)} ${theme.fg("success", `+${file.additions}`)} ${theme.fg("error", `-${file.removals}`)}`;
-					text += `\n${renderDiff(file.diff, expanded, theme)}`;
-				}
-			}
-
-			return new Text(text, 0, 0);
+			return isPartial ? new Text(`${theme.fg("dim", "•")} ${theme.bold("Patching")}`, 0, 0) : new Container();
 		},
 	});
 }
