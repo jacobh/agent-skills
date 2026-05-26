@@ -4,6 +4,7 @@
 - **Use `rg` (ripgrep) as the primary search tool** for all searches in the codebase
 
 ## File Manipulation
+- Prefer `apply_patch` for precise file edits, especially multi-file edits; use `edit` only when `apply_patch` is not available or a direct exact replacement is simpler
 - Prefer to use bash commands like `cp` and `mv` to move files around rather than reading a file and writing it manually
 
 ## TypeScript Tools
